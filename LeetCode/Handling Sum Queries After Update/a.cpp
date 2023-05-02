@@ -1,8 +1,7 @@
 class Solution {
 public:
-    const int N = 1e6 + 500;
-    int t[N * 4];
-    int tag[N * 4];
+    int t[int(4e6 + 500)];
+    int tag[int(4e6 + 500)];
 
     void build(int u, int l, int r, vector<int>& a) {
         if (l == r) {
@@ -59,6 +58,7 @@ public:
     		t[u] = new_cnt_1;
     		
     		tag[u]++;
+            return;
 		}
 		
 		int um = ul + ur >> 1;
@@ -68,24 +68,6 @@ public:
 		
 		t[u] = t[u + u] + t[u + u + 1];
     }
-
-	int get(int u, int l, int r, int k) {
-		
-		push(u, l, r);
-		
-		if (l == r) {
-			return l;
-		}
-		
-		int m = l + r>> 1;
-	
-	
-		/// 9
-		/// [...5...] [...6...]
-	
-		if (t[u + u] >= k) return get(u + u, l, m, k);
-		else return get(u + u + 1, m + 1, r, k - t[u + u]);
-	}
 
     vector<long long> handleQuery(vector<int>& a, vector<int>& nums2, vector<vector<int>>& q) {
         int n = a.size();
@@ -109,12 +91,11 @@ public:
                 update(1, 0, n - 1, l, r);
             }
             if (tp == 2) {
-            	int p = qr[1];
-            	if (t[1] < p) {
-            		cout << -1 << endl;
-				} else {
-            		cout << get(1, 0, n - 1, p) << endl;
-            	}
+                int p = qr[1];
+                sum += p * 1ll * t[1];
+            }
+            if (tp == 3) {
+                result.push_back(sum);  
             }
         }
         return result;
@@ -122,3 +103,29 @@ public:
            
     }
 };
+
+
+/*
+
+	/// for getting k-th number
+	
+	
+	int get(int u, int l, int r, int k) {
+		
+		push(u, l, r);
+		
+		if (l == r) {
+			return l;
+		}
+		
+		int m = l + r>> 1;
+	
+	
+		/// 9
+		/// [...5...] [...6...]
+	
+		if (t[u + u] >= k) return get(u + u, l, m, k);
+		else return get(u + u + 1, m + 1, r, k - t[u + u]);
+	}
+
+*/
